@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tejidos de Memoria</title>
+
+  <link href="img/logo.png" rel="icon" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: #DFE8FC;
+      font-family: 'Lexend', sans-serif;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background-color: #D3E0FE;
+      padding: 0.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 40px;
+      width: auto;
+      display: block;
+      cursor: pointer;
+    }
+
+    .main-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .main-nav-links a {
+      color: #093824;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .main-nav-links a:hover {
+      color: #C6D8FF;
+      background-color: #093824;
+    }
+
+    .collage {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 8rem 2rem 4rem;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out, transform 0.3s ease-in-out;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .img.visible {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
+      margin: 5% auto;
+      max-width: 800px;
+      background-color: white;
+      border-radius: 10px;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .descripcion {
+      margin-top: 0.5rem;
+      color: #333;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .cerrar {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .cerrar:hover {
+      color: #000;
+    }
+
+    /* Menú hamburguesa oculto - MODIFICADO */
+/* ===================== SIDE MENU ===================== */
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 250px;
+    height: 100%;
+    background-color: #D3E0FE;
+    color: #093824;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: left 0.3s ease-in-out;
+    z-index: 200;
+}
+
+.side-menu.open {
+    left: 0;
+}
+
+.side-menu a {
+    color: #093824;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.side-menu a:hover {
+    color: #C6D8FF;
+    background-color: #093824;
+}
+
+.close-btn {
+    align-self: flex-end;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: #093824;
+    cursor: pointer;
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 150;
+}
+
+.menu-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+  </style>
+</head>
+<body>
+
+        <div id="menu-overlay" class="menu-overlay"></div>
+        <div id="side-menu" class="side-menu">
+        <button id="close-menu-btn" class="close-btn">&times;</button>
+         <a href="index.html">INICIO</a>
+                <a href="index.html">GALERIA</a>
+                <a href="index.html">PROYECTO</a>
+                <a href="reflexiona.html">REFLEXIONA</a>     
+        </div>
+
+        <div id="contenedor">
+        <nav>
+                <div class="logo" id="logo-trigger">
+                <img src="img/logo.png" alt="Logo TDM - Abrir Menú" height="40">
+        </div>
+                <div class="main-nav-links">
+                <a href="index.html">INICIO</a>
+                <a href="index.html">GALERIA</a>
+                <a href="index.html">PROYECTO</a>
+                <a href="reflexiona.html">REFLEXIONA</a>     
+                <div id="menu-overlay" class="menu-overlay"></div>
+
+        </div>
+        
+    </nav>
+
+  <div class="collage"></div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="cerrar" id="cerrarModal">&times;</span>
+      <img id="modal-img" src="" alt="">
+      <div class="descripcion" id="modal-descripcion"></div>
+    </div>
+  </div>
+
+  <script>
+    const collage = document.querySelector('.collage');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalDesc = document.getElementById('modal-descripcion');
+    const cerrarModal = document.getElementById('cerrarModal');
+
+    // Lista de descripciones (ajusta según tus imágenes)
+    const descripciones = [
+      "Estos dos amantes hoy en día tienen 4 casas",
+      "Esta pareja hoy en día ya no está junta",
+      "Amigos de tipo raíz ",
+      "Una muy buena fotografía",
+      "Un pequeño Daniel",
+      "Tres amigos que el destino separo sus caminos",
+      "Una rusa",
+      "En nuestros corazones siempre estaras mamita Rosa",
+      "Familia",
+      "Siempre despues de la tormenta viene la calma"
+    ];
+
+    function createImage(index) {
+      const img = document.createElement('img');
+      const num = (index % descripciones.length) + 1;
+      img.src = `imgs/img${num}.jpg`;
+      img.className = 'img';
+      img.setAttribute('data-descripcion', descripciones[num - 1] || "Sin descripción");
+      collage.appendChild(img);
+      observer.observe(img);
+
+      img.addEventListener('click', () => {
+        modalImg.src = img.src;
+        modalDesc.textContent = img.getAttribute('data-descripcion');
+        modal.style.display = 'block';
+      });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    // Cargar imágenes iniciales
+    for (let i = 0; i < 20; i++) {
+      createImage(i);
+    }
+
+    // Scroll infinito
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+        for (let i = 0; i < 10; i++) {
+          createImage(i + Math.floor(Math.random() * 10));
+        }
+      }
+    });
+
+    // Cerrar modal
+    cerrarModal.onclick = () => modal.style.display = 'none';
+    window.onclick = (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    };
+
+ // --- NUEVO: Script para Menú Lateral ---
+            const logoTrigger = document.getElementById('logo-trigger');
+            const sideMenu = document.getElementById('side-menu');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const menuOverlay = document.getElementById('menu-overlay');
+            const sideMenuLinks = document.querySelectorAll('#side-menu a'); // Seleccionar enlaces DENTRO del menú
+
+            // Función para abrir menú
+            function openSideMenu() {
+                sideMenu.classList.add('open');
+                menuOverlay.classList.add('open');
+            }
+
+            // Función para cerrar menú
+            function closeSideMenu() {
+                sideMenu.classList.remove('open');
+                menuOverlay.classList.remove('open');
+            }
+
+            // Event listeners
+            if(logoTrigger) {
+                logoTrigger.addEventListener('click', openSideMenu);
+            }
+            if(closeMenuBtn) {
+                closeMenuBtn.addEventListener('click', closeSideMenu);
+            }
+            if(menuOverlay) {
+                menuOverlay.addEventListener('click', closeSideMenu);
+            }
+
+
+            // Cerrar menú al hacer clic en un enlace del menú lateral
+            sideMenuLinks.forEach(link => {
+                link.addEventListener('click', closeSideMenu);
+            });
+
+  </script>
+</body>
+</html>
